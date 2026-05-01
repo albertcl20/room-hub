@@ -1,8 +1,9 @@
 import { PageIntro, SectionCard } from "@/components/platform-sections";
-import { formatShortDateTime, getVisitors } from "@/lib/platform";
+import { formatShortDateTime } from "@/lib/platform";
+import { getPlatformVisitors } from "@/lib/server/platform-data";
 
-export default function VisitorsPage() {
-  const visitors = getVisitors();
+export default async function VisitorsPage() {
+  const visitors = await getPlatformVisitors();
 
   return (
     <main className="page-shell platform-page">

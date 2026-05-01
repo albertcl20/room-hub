@@ -1,9 +1,10 @@
 import { PageIntro, SectionCard } from "@/components/platform-sections";
-import { formatRange, getMeetings, getRooms, minutesUntil } from "@/lib/platform";
+import { formatRange, minutesUntil } from "@/lib/platform";
+import { getPlatformMeetings, getPlatformRooms } from "@/lib/server/platform-data";
 
-export default function MeetingsPage() {
-  const meetings = getMeetings();
-  const roomIndex = Object.fromEntries(getRooms().map((room) => [room.id, room.name]));
+export default async function MeetingsPage() {
+  const [meetings, rooms] = await Promise.all([getPlatformMeetings(), getPlatformRooms()]);
+  const roomIndex = Object.fromEntries(rooms.map((room) => [room.id, room.name]));
 
   return (
     <main className="page-shell platform-page">

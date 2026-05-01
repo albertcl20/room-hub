@@ -159,7 +159,9 @@ select {
 .platform-content-grid,
 .wide-main-grid,
 .desk-grid,
-.command-grid {
+.command-grid,
+.status-board-grid,
+.compact-timeline {
   display: grid;
   gap: 20px;
 }
@@ -178,6 +180,14 @@ select {
 
 .command-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.status-board-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.compact-timeline {
+  gap: 12px;
 }
 
 .column-main,
@@ -313,15 +323,20 @@ select {
 }
 
 .room-list-item,
-.desk-card {
+.desk-card,
+.status-board-card {
   width: 100%;
   border: 1px solid var(--line);
   background: var(--surface-strong);
   border-radius: 24px;
   padding: 16px;
   text-align: left;
-  cursor: pointer;
   transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.room-list-item,
+.desk-card {
+  cursor: pointer;
 }
 
 .room-list-item-active {
@@ -457,11 +472,17 @@ select {
 .timeline-item,
 .brief-block,
 .empty-state,
-.desk-card {
+.desk-card,
+.status-board-card {
   border-radius: 22px;
   border: 1px solid var(--line);
   background: var(--surface-soft);
   padding: 16px;
+}
+
+.status-board-card {
+  display: grid;
+  gap: 16px;
 }
 
 .timeline-item-rich {
@@ -498,7 +519,8 @@ select {
   .top-metrics,
   .brief-grid.value-grid,
   .desk-grid,
-  .command-grid {
+  .command-grid,
+  .status-board-grid {
     grid-template-columns: 1fr;
   }
 

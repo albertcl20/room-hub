@@ -1,21 +1,17 @@
 import { PageIntro, SectionCard, StatCard, StatGrid } from "@/components/platform-sections";
-import { buildExchangeNotes, getDesks, getInsights, getMeetings, getRooms, getVisitors } from "@/lib/platform";
+import { getPlatformOverview } from "@/lib/server/platform-data";
 
-export default function Home() {
-  const rooms = getRooms();
-  const meetings = getMeetings();
-  const desks = getDesks();
-  const visitors = getVisitors();
-  const insights = getInsights();
-  const integration = buildExchangeNotes();
+export default async function Home() {
+  const overview = await getPlatformOverview();
+  const { rooms, meetings, desks, visitors, insights, integration, highlights } = overview;
 
   return (
     <main className="page-shell platform-page">
       <div className="page-grid">
         <PageIntro
           eyebrow="Overview"
-          title="A full workplace management platform, not just a room card wall."
-          copy="Run meeting rooms, desks, visitors, and office operations from one place. This version broadens the product into a real Robin-style platform shell with multiple workflows and admin surfaces."
+          title="A Robin-class workplace platform, built as a serious competitor shell."
+          copy="Run meeting rooms, desks, visitors, resource booking, status boards, and workplace operations from one place. This version now reads from the database-backed platform layer instead of leaning only on demo arrays."
           actions={<button className="primary-button">Launch workplace day</button>}
         />
 
@@ -52,26 +48,17 @@ export default function Home() {
           </SectionCard>
         </div>
 
-        <div className="platform-content-grid">
-          <SectionCard eyebrow="Modules" title="Core product surfaces shipping in this build">
-            <div className="brief-grid value-grid">
-              <div className="brief-block value-block"><span>Rooms</span><p>Availability, timelines, in-room actions, room inventory, and live meeting state.</p></div>
-              <div className="brief-block value-block"><span>Meetings</span><p>Daily schedule, organizer view, and booking/extension control surface.</p></div>
-              <div className="brief-block value-block"><span>Desks</span><p>Flexible desk booking and neighborhood occupancy.</p></div>
-              <div className="brief-block value-block"><span>Visitors</span><p>Expected arrivals, hosts, check-in state, and front-desk context.</p></div>
-            </div>
-          </SectionCard>
-
-          <SectionCard eyebrow="Why this is different" title="Closer to a product platform than a landing-page fakeout">
-            <ul className="plain-list">
-              <li>Multiple real routes instead of one dashboard page pretending to be a platform.</li>
-              <li>Shared design system and navigation shell.</li>
-              <li>API endpoints already in place for room operations.</li>
-              <li>Prisma data model added for orgs, users, locations, floors, rooms, meetings, desks, and visitors.</li>
-              <li>Structured to swap demo data for Microsoft Graph-backed workplace data.</li>
-            </ul>
-          </SectionCard>
-        </div>
+        <SectionCard eyebrow="Competitive modules" title="Category-complete surfaces we’re shaping toward">
+          <div className="brief-grid value-grid">
+            {highlights.map((highlight) => (
+              <div key={highlight.label} className="brief-block value-block">
+                <span>{highlight.label}</span>
+                <p>{highlight.value}</p>
+                <p className="timeline-meta">{highlight.note}</p>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
       </div>
     </main>
   );

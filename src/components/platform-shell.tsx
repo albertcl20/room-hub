@@ -9,8 +9,11 @@ const navItems = [
   { href: "/rooms", label: "Rooms" },
   { href: "/meetings", label: "Meetings" },
   { href: "/desks", label: "Desks" },
+  { href: "/resources", label: "Resources" },
   { href: "/visitors", label: "Visitors" },
+  { href: "/status-boards", label: "Status boards" },
   { href: "/analytics", label: "Analytics" },
+  { href: "/settings", label: "Settings" },
 ];
 
 export function PlatformShell({ children }: { children: ReactNode }) {

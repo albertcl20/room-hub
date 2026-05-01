@@ -1,8 +1,8 @@
 import { PageIntro, SectionCard } from "@/components/platform-sections";
-import { getDesks } from "@/lib/platform";
+import { getPlatformDesks } from "@/lib/server/platform-data";
 
-export default function DesksPage() {
-  const desks = getDesks();
+export default async function DesksPage() {
+  const desks = await getPlatformDesks();
 
   return (
     <main className="page-shell platform-page">
@@ -10,7 +10,7 @@ export default function DesksPage() {
         <PageIntro
           eyebrow="Desks"
           title="Flexible desk booking as part of the same workplace system."
-          copy="Robin isn’t just rooms. A real workplace platform also handles neighborhoods, hot desks, and daily seat allocation."
+          copy="A Robin-class workplace platform also handles neighborhoods, hot desks, and daily seat allocation."
         />
 
         <SectionCard eyebrow="Desk map" title="Desk inventory and assignments" aside={<button className="primary-button">Book a desk</button>}>

@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { buildExchangeNotes, getRooms } from "@/lib/rooms";
+import { getPlatformRooms } from "@/lib/server/platform-data";
+import { buildExchangeNotes } from "@/lib/rooms";
 
 export async function GET() {
   return NextResponse.json({
-    rooms: getRooms(),
+    rooms: await getPlatformRooms(),
     integration: buildExchangeNotes(),
   });
 }

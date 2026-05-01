@@ -1,8 +1,8 @@
 import { PageIntro, SectionCard, StatCard, StatGrid } from "@/components/platform-sections";
-import { getInsights } from "@/lib/platform";
+import { getPlatformInsights } from "@/lib/server/platform-data";
 
-export default function AnalyticsPage() {
-  const insights = getInsights();
+export default async function AnalyticsPage() {
+  const insights = await getPlatformInsights();
 
   return (
     <main className="page-shell platform-page">
@@ -10,7 +10,7 @@ export default function AnalyticsPage() {
         <PageIntro
           eyebrow="Analytics"
           title="Utilization, occupancy, and no-show signals for workplace planning."
-          copy="A Robin-style platform needs reporting and planning surfaces, not just booking controls. This page sets up the analytics layer."
+          copy="A Robin-class platform needs planning and reporting surfaces, not just booking controls."
         />
 
         <StatGrid>
