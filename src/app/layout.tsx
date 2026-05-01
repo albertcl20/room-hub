@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { PlatformShell } from "@/components/platform-shell";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,13 +15,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Room Hub",
-  description: "Robin-inspired meeting room management with Microsoft Exchange-backed room data.",
+  description: "Workplace management platform for meetings, rooms, desks, visitors, and analytics.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <PlatformShell>{children}</PlatformShell>
+      </body>
     </html>
   );
 }
