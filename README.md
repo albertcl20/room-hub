@@ -17,22 +17,27 @@ Robin-inspired meeting room management app with Microsoft Exchange-backed room c
 
 ## Current architecture
 
-- `src/lib/rooms.ts`
-  - demo data
-  - formatting helpers
-  - integration mode detection
+- `src/lib/platform.ts`
+  - platform demo data for rooms, meetings, desks, visitors, insights
+- `src/lib/server/prisma.ts`
+  - shared Prisma client
+- `prisma/schema.prisma`
+  - initial relational model for orgs, users, locations, floors, rooms, meetings, desks, bookings, visitors
 - `src/app/api/rooms`
   - room list endpoint
 - `src/app/api/rooms/[roomId]/availability`
   - availability endpoint
 - `src/app/api/rooms/[roomId]/actions`
   - mutation endpoint shape for room actions
+- `src/app/api/platform/bootstrap`
+  - demo workspace bootstrap endpoint for the database-backed foundation
 
 ## Environment variables
 
 ```bash
+DATABASE_URL=file:./dev.db
 APP_PASSWORD=your-password
-ROOM_HUB_DATA_MODE=demo # or graph
+ROOM_HUB_DATA_MODE=database # demo | database | graph (graph wiring still pending)
 MICROSOFT_TENANT_ID=
 MICROSOFT_CLIENT_ID=
 MICROSOFT_CLIENT_SECRET=
@@ -42,6 +47,9 @@ MICROSOFT_CLIENT_SECRET=
 
 ```bash
 npm install
+cp .env.example .env
+npm run db:generate
+npm run db:push
 npm run dev
 npm run build
 ```

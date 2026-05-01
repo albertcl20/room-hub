@@ -67,6 +67,7 @@ export default function Home() {
               <li>Multiple real routes instead of one dashboard page pretending to be a platform.</li>
               <li>Shared design system and navigation shell.</li>
               <li>API endpoints already in place for room operations.</li>
+              <li>Prisma data model added for orgs, users, locations, floors, rooms, meetings, desks, and visitors.</li>
               <li>Structured to swap demo data for Microsoft Graph-backed workplace data.</li>
             </ul>
           </SectionCard>

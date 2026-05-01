@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum RoomStatus {
+  available
+  occupied
+  endingSoon
+}
+
+enum DeskStatus {
+  available
+  booked
+}
+
+enum VisitorStatus {
+  expected
+  checkedIn
+  late
+}
+
+model Organization {
+  id        String      @id @default(cuid())
+  name      String
+  slug      String      @unique
+  locations Location[]
+  users     User[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model User {
+  id             String        @id @default(cuid())
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  email          String        @unique
+  role           String
+  meetings       Meeting[]     @relation("MeetingOrganizer")
+  deskBookings   DeskBooking[]
+  visitorHosts   Visitor[]     @relation("VisitorHost")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Location {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  city           String
+  timezone       String
+  floors         Floor[]
+  rooms          Room[]
+  desks          Desk[]
+  visitors       Visitor[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Floor {
+  id         String   @id @default(cuid())
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  name       String
+  rooms      Room[]
+  desks      Desk[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Room {
+  id                String      @id @default(cuid())
+  locationId        String
+  floorId           String
+  location          Location    @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  floor             Floor       @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  name              String
+  email             String      @unique
+  capacity          Int
+  amenities         String
+  exchangeConnected Boolean     @default(false)
+  status            RoomStatus  @default(available)
+  utilization       Int         @default(0)
+  freeUntil         DateTime?
+  meetings          Meeting[]
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+model Meeting {
+  id            String   @id @default(cuid())
+  roomId        String
+  organizerId   String
+  room          Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  organizer     User     @relation("MeetingOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
+  title         String
+  start         DateTime
+  end           DateTime
+  attendees     Int      @default(0)
+  externalEventId String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Desk {
+  id          String        @id @default(cuid())
+  locationId  String
+  floorId     String
+  location    Location      @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  floor       Floor         @relation(fields: [floorId], references: [id], onDelete: Cascade)
+  name        String
+  neighborhood String
+  status      DeskStatus    @default(available)
+  bookings    DeskBooking[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model DeskBooking {
+  id        String   @id @default(cuid())
+  deskId     String
+  userId     String
+  desk       Desk     @relation(fields: [deskId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  start      DateTime
+  end        DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Visitor {
+  id          String        @id @default(cuid())
+  locationId  String
+  hostId      String
+  location    Location      @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  host        User          @relation("VisitorHost", fields: [hostId], references: [id], onDelete: Cascade)
+  name        String
+  company     String
+  arrival     DateTime
+  status      VisitorStatus @default(expected)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
